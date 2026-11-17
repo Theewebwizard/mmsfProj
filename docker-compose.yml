@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: trustchain
+      POSTGRES_USER: trustchain
+      POSTGRES_PASSWORD: trustchain
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trustchain"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://trustchain:trustchain@postgres:5432/trustchain
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: trustchain-evidence
+      MINIO_SECURE: "false"
+      JWT_SECRET: change_me_in_production_min_32_chars_long
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: "60"
+      KEY_DIR: /app/keys
+    volumes:
+      - ./backend:/app
+      - api_keys:/app/keys
+
+  witness:
+    build:
+      context: ./witness
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      WITNESS_DB_URL: postgresql+asyncpg://trustchain:trustchain@postgres:5432/trustchain
+      WITNESS_TOKEN: witness_secret_token_change_me
+    volumes:
+      - ./witness:/app
+      - witness_keys:/app/keys
+
+volumes:
+  postgres_data:
+  minio_data:
+  api_keys:
+  witness_keys:
+

@@ -1,0 +1,2 @@
+"""TrustChain backend application package."""
+

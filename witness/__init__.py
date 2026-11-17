@@ -1,0 +1,2 @@
+"""Witness microservice package."""
+
