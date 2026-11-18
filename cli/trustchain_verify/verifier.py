@@ -11,7 +11,11 @@ from typing import Any, Optional
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 
-from trustchain_verify.rfc9162 import leaf_hash, verify_consistency, verify_inclusion
+try:
+    from trustchain_verify.rfc9162 import leaf_hash, verify_consistency, verify_inclusion
+except ImportError:
+    from .rfc9162 import leaf_hash, verify_consistency, verify_inclusion
+
 
 PASS, FAIL, INCONCLUSIVE = "PASS", "FAIL", "INCONCLUSIVE"
 

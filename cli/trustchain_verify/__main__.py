@@ -13,7 +13,11 @@ import json
 import sys
 from pathlib import Path
 
-from trustchain_verify.verifier import FAIL, PASS, load_key_arg, verify_bundle
+try:
+    from trustchain_verify.verifier import FAIL, PASS, load_key_arg, verify_bundle
+except ImportError:
+    from .verifier import FAIL, PASS, load_key_arg, verify_bundle
+
 
 ICONS = {"PASS": "✓", "FAIL": "✗", "INCONCLUSIVE": "?"}
 
