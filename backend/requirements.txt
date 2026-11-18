@@ -21,3 +21,5 @@ aiofiles>=23.2.0
 aiosqlite>=0.20.0
 email-validator>=2.0.0
 
+opencv-python-headless>=4.9.0
+matplotlib>=3.8.0

@@ -1,0 +1,2382 @@
+{
+  "run_id": "full-seed1337",
+  "name": "Full benchmark suite (seed 1337)",
+  "status": "completed",
+  "started_at": "2026-11-17T17:55:13.338451+00:00",
+  "finished_at": "2026-11-17T17:56:01.338609+00:00",
+  "config": {
+    "seed": 1337,
+    "quick": false,
+    "n_base_originals": 60,
+    "n_negatives": 60,
+    "transforms": [
+      "identity",
+      "strip_metadata",
+      "jpeg_q90",
+      "jpeg_q70",
+      "jpeg_q50",
+      "jpeg_q30",
+      "resize_75",
+      "resize_50",
+      "resize_25",
+      "crop_center_80",
+      "crop_center_60",
+      "crop_random_80",
+      "crop_random_60",
+      "brightness_+25",
+      "brightness_-25",
+      "contrast_+30",
+      "contrast_-30",
+      "format_png",
+      "format_webp",
+      "social_pipeline"
+    ],
+    "phash_threshold_default": 10,
+    "orb_top_k": 10,
+    "orb_min_inliers": 15,
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  },
+  "summary": {
+    "retrieval_recall_at_1_mean": 0.8017,
+    "retrieval_recall_at_5_mean": 0.8017,
+    "retrieval_fpr_negatives": 0.0,
+    "sha256_only_recall": 0.05,
+    "best_threshold_youden": 16,
+    "tpr_at_best": 0.815,
+    "fpr_at_best": 0.0,
+    "crop_recall_phash": 0.0083,
+    "crop_recall_phash_orb": 0.55,
+    "crop_fpr_phash": 0.0,
+    "crop_fpr_phash_orb": 0.0,
+    "ed25519_sign_median_us": 16.412,
+    "ed25519_verify_median_us": 37.951,
+    "sha256_1MB_median_us": 494.109,
+    "merkle_largest_tree": 71557,
+    "merkle_inclusion_verify_us_largest": 7.501,
+    "witness_min_detection_rate": 1.0,
+    "witness_false_alarm_rate": 0.0,
+    "ablation_A_recovery": 0.05,
+    "ablation_B_recovery": 0.8017,
+    "ablation_C_recovery": 0.91,
+    "ablation_D_recovery": 0.91,
+    "ablation_D_tamper_detection": 1.0,
+    "orb_extract_ms_mean": 1.63,
+    "strip_sha256_match_rate": 0.0,
+    "strip_phash_match_rate": 1.0
+  },
+  "files": [
+    "retrieval_accuracy.csv",
+    "retrieval_accuracy.png",
+    "threshold_sweep.csv",
+    "threshold_sweep.png",
+    "threshold_sweep_by_family.png",
+    "roc.png",
+    "cropping_resilience.csv",
+    "cropping_resilience.png",
+    "orb_inlier_histogram.csv",
+    "orb_inlier_histogram.png",
+    "crypto_latency.csv",
+    "crypto_latency.png",
+    "merkle_scaling.csv",
+    "merkle_generation.png",
+    "merkle_verification.png",
+    "merkle_proof_size.png",
+    "witness_detection.csv",
+    "witness_detection.png",
+    "ablation.csv",
+    "ablation.png",
+    "ablation_latency.png",
+    "metadata_stripping.csv",
+    "metadata_stripping.png",
+    "manifest.json"
+  ],
+  "benchmarks": {
+    "retrieval_accuracy": {
+      "title": "Retrieval accuracy by transformation (SHA-256 + pHash)",
+      "description": "Gallery of 60 registered originals. For every transformed query: Precision@1 = correct top-1 among queries returning a candidate; Recall@1/Recall@5 = true source within the top-1/top-5 candidates (Hamming \u2264 10); SHA-256 exact = byte-identical lookup. FPR = unrelated negative queries returning any candidate. Measured FPR on 60 negatives: 0.0.",
+      "files": [
+        "retrieval_accuracy.csv",
+        "retrieval_accuracy.png"
+      ],
+      "charts": [
+        {
+          "title": "Retrieval accuracy by transformation (\u03c4=10)",
+          "type": "bar",
+          "x": "transform",
+          "series": [
+            "sha256_exact_rate",
+            "precision_at_1",
+            "recall_at_1",
+            "recall_at_5"
+          ],
+          "x_label": "",
+          "y_label": "rate",
+          "data": [
+            {
+              "transform": "identity",
+              "family": "none",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 1.0,
+              "mean_hamming_true_source": 0.0
+            },
+            {
+              "transform": "strip_metadata",
+              "family": "metadata",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0
+            },
+            {
+              "transform": "jpeg_q90",
+              "family": "jpeg",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0333
+            },
+            {
+              "transform": "jpeg_q70",
+              "family": "jpeg",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0333
+            },
+            {
+              "transform": "jpeg_q50",
+              "family": "jpeg",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.1
+            },
+            {
+              "transform": "jpeg_q30",
+              "family": "jpeg",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.1333
+            },
+            {
+              "transform": "resize_75",
+              "family": "resize",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.1
+            },
+            {
+              "transform": "resize_50",
+              "family": "resize",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0667
+            },
+            {
+              "transform": "resize_25",
+              "family": "resize",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.1
+            },
+            {
+              "transform": "crop_center_80",
+              "family": "crop",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 0.0333,
+              "recall_at_5": 0.0333,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 9.0
+            },
+            {
+              "transform": "crop_center_60",
+              "family": "crop",
+              "queries": 60,
+              "precision_at_1": null,
+              "recall_at_1": 0.0,
+              "recall_at_5": 0.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": null
+            },
+            {
+              "transform": "crop_random_80",
+              "family": "crop",
+              "queries": 60,
+              "precision_at_1": null,
+              "recall_at_1": 0.0,
+              "recall_at_5": 0.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": null
+            },
+            {
+              "transform": "crop_random_60",
+              "family": "crop",
+              "queries": 60,
+              "precision_at_1": null,
+              "recall_at_1": 0.0,
+              "recall_at_5": 0.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": null
+            },
+            {
+              "transform": "brightness_+25",
+              "family": "photometric",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 2.6
+            },
+            {
+              "transform": "brightness_-25",
+              "family": "photometric",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0667
+            },
+            {
+              "transform": "contrast_+30",
+              "family": "photometric",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 1.5
+            },
+            {
+              "transform": "contrast_-30",
+              "family": "photometric",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0
+            },
+            {
+              "transform": "format_png",
+              "family": "format",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0
+            },
+            {
+              "transform": "format_webp",
+              "family": "format",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.0333
+            },
+            {
+              "transform": "social_pipeline",
+              "family": "combined",
+              "queries": 60,
+              "precision_at_1": 1.0,
+              "recall_at_1": 1.0,
+              "recall_at_5": 1.0,
+              "sha256_exact_rate": 0.0,
+              "mean_hamming_true_source": 0.1
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "transform": "identity",
+          "family": "none",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 1.0,
+          "mean_hamming_true_source": 0.0
+        },
+        {
+          "transform": "strip_metadata",
+          "family": "metadata",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0
+        },
+        {
+          "transform": "jpeg_q90",
+          "family": "jpeg",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0333
+        },
+        {
+          "transform": "jpeg_q70",
+          "family": "jpeg",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0333
+        },
+        {
+          "transform": "jpeg_q50",
+          "family": "jpeg",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.1
+        },
+        {
+          "transform": "jpeg_q30",
+          "family": "jpeg",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.1333
+        },
+        {
+          "transform": "resize_75",
+          "family": "resize",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.1
+        },
+        {
+          "transform": "resize_50",
+          "family": "resize",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0667
+        },
+        {
+          "transform": "resize_25",
+          "family": "resize",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.1
+        },
+        {
+          "transform": "crop_center_80",
+          "family": "crop",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 0.0333,
+          "recall_at_5": 0.0333,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 9.0
+        },
+        {
+          "transform": "crop_center_60",
+          "family": "crop",
+          "queries": 60,
+          "precision_at_1": null,
+          "recall_at_1": 0.0,
+          "recall_at_5": 0.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": null
+        },
+        {
+          "transform": "crop_random_80",
+          "family": "crop",
+          "queries": 60,
+          "precision_at_1": null,
+          "recall_at_1": 0.0,
+          "recall_at_5": 0.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": null
+        },
+        {
+          "transform": "crop_random_60",
+          "family": "crop",
+          "queries": 60,
+          "precision_at_1": null,
+          "recall_at_1": 0.0,
+          "recall_at_5": 0.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": null
+        },
+        {
+          "transform": "brightness_+25",
+          "family": "photometric",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 2.6
+        },
+        {
+          "transform": "brightness_-25",
+          "family": "photometric",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0667
+        },
+        {
+          "transform": "contrast_+30",
+          "family": "photometric",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 1.5
+        },
+        {
+          "transform": "contrast_-30",
+          "family": "photometric",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0
+        },
+        {
+          "transform": "format_png",
+          "family": "format",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0
+        },
+        {
+          "transform": "format_webp",
+          "family": "format",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.0333
+        },
+        {
+          "transform": "social_pipeline",
+          "family": "combined",
+          "queries": 60,
+          "precision_at_1": 1.0,
+          "recall_at_1": 1.0,
+          "recall_at_5": 1.0,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": 0.1
+        },
+        {
+          "transform": "NEGATIVES (unrelated)",
+          "family": "negative",
+          "queries": 60,
+          "precision_at_1": null,
+          "recall_at_1": null,
+          "recall_at_5": null,
+          "sha256_exact_rate": 0.0,
+          "mean_hamming_true_source": null
+        }
+      ]
+    },
+    "threshold_sweep": {
+      "title": "Hamming threshold sweep (ROC)",
+      "description": "True-positive rate (correct top-1 within threshold, all transformed queries) and false-positive rate (negatives with any candidate within threshold) as the pHash Hamming threshold \u03c4 varies.",
+      "files": [
+        "threshold_sweep.csv",
+        "threshold_sweep.png",
+        "threshold_sweep_by_family.png",
+        "roc.png"
+      ],
+      "charts": [
+        {
+          "title": "TPR / FPR vs Hamming threshold",
+          "type": "line",
+          "x": "threshold",
+          "series": [
+            "tpr",
+            "fpr"
+          ],
+          "x_label": "Hamming threshold \u03c4",
+          "y_label": "rate",
+          "data": [
+            {
+              "threshold": 0,
+              "tpr": 0.7042,
+              "fpr": 0.0,
+              "tpr_jpeg": 0.9625,
+              "tpr_resize": 0.9556,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.6083,
+              "tpr_format": 0.9917,
+              "tpr_combined": 0.95
+            },
+            {
+              "threshold": 2,
+              "tpr": 0.7783,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.8917,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 4,
+              "tpr": 0.7967,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.9833,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 6,
+              "tpr": 0.7992,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.9958,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 8,
+              "tpr": 0.8008,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0042,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 10,
+              "tpr": 0.8017,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 12,
+              "tpr": 0.8017,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 14,
+              "tpr": 0.805,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.025,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 16,
+              "tpr": 0.815,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.075,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 18,
+              "tpr": 0.8275,
+              "fpr": 0.0833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.1375,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 20,
+              "tpr": 0.8483,
+              "fpr": 0.2667,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.2417,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 22,
+              "tpr": 0.8617,
+              "fpr": 0.6833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 24,
+              "tpr": 0.8642,
+              "fpr": 0.9833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 26,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 28,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 30,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 32,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            }
+          ]
+        },
+        {
+          "title": "TPR by transformation family vs threshold",
+          "type": "line",
+          "x": "threshold",
+          "series": [
+            "tpr_jpeg",
+            "tpr_resize",
+            "tpr_crop",
+            "tpr_photometric",
+            "tpr_format",
+            "tpr_combined"
+          ],
+          "x_label": "Hamming threshold \u03c4",
+          "y_label": "TPR",
+          "data": [
+            {
+              "threshold": 0,
+              "tpr": 0.7042,
+              "fpr": 0.0,
+              "tpr_jpeg": 0.9625,
+              "tpr_resize": 0.9556,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.6083,
+              "tpr_format": 0.9917,
+              "tpr_combined": 0.95
+            },
+            {
+              "threshold": 2,
+              "tpr": 0.7783,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.8917,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 4,
+              "tpr": 0.7967,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.9833,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 6,
+              "tpr": 0.7992,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0,
+              "tpr_photometric": 0.9958,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 8,
+              "tpr": 0.8008,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0042,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 10,
+              "tpr": 0.8017,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 12,
+              "tpr": 0.8017,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.0083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 14,
+              "tpr": 0.805,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.025,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 16,
+              "tpr": 0.815,
+              "fpr": 0.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.075,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 18,
+              "tpr": 0.8275,
+              "fpr": 0.0833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.1375,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 20,
+              "tpr": 0.8483,
+              "fpr": 0.2667,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.2417,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 22,
+              "tpr": 0.8617,
+              "fpr": 0.6833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3083,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 24,
+              "tpr": 0.8642,
+              "fpr": 0.9833,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 26,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 28,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 30,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            },
+            {
+              "threshold": 32,
+              "tpr": 0.8642,
+              "fpr": 1.0,
+              "tpr_jpeg": 1.0,
+              "tpr_resize": 1.0,
+              "tpr_crop": 0.3208,
+              "tpr_photometric": 1.0,
+              "tpr_format": 1.0,
+              "tpr_combined": 1.0
+            }
+          ]
+        },
+        {
+          "title": "ROC (pHash, sweep over \u03c4)",
+          "type": "line",
+          "x": "fpr",
+          "series": [
+            "tpr"
+          ],
+          "x_label": "FPR",
+          "y_label": "TPR",
+          "data": [
+            {
+              "fpr": 0.0,
+              "tpr": 0.7042
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.7783
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.7967
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.7992
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.8008
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.8017
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.805
+            },
+            {
+              "fpr": 0.0,
+              "tpr": 0.815
+            },
+            {
+              "fpr": 0.0833,
+              "tpr": 0.8275
+            },
+            {
+              "fpr": 0.2667,
+              "tpr": 0.8483
+            },
+            {
+              "fpr": 0.6833,
+              "tpr": 0.8617
+            },
+            {
+              "fpr": 0.9833,
+              "tpr": 0.8642
+            },
+            {
+              "fpr": 1.0,
+              "tpr": 0.8642
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "threshold": 0,
+          "tpr": 0.7042,
+          "fpr": 0.0,
+          "tpr_jpeg": 0.9625,
+          "tpr_resize": 0.9556,
+          "tpr_crop": 0.0,
+          "tpr_photometric": 0.6083,
+          "tpr_format": 0.9917,
+          "tpr_combined": 0.95
+        },
+        {
+          "threshold": 2,
+          "tpr": 0.7783,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0,
+          "tpr_photometric": 0.8917,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 4,
+          "tpr": 0.7967,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0,
+          "tpr_photometric": 0.9833,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 6,
+          "tpr": 0.7992,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0,
+          "tpr_photometric": 0.9958,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 8,
+          "tpr": 0.8008,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0042,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 10,
+          "tpr": 0.8017,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0083,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 12,
+          "tpr": 0.8017,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.0083,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 14,
+          "tpr": 0.805,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.025,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 16,
+          "tpr": 0.815,
+          "fpr": 0.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.075,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 18,
+          "tpr": 0.8275,
+          "fpr": 0.0833,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.1375,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 20,
+          "tpr": 0.8483,
+          "fpr": 0.2667,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.2417,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 22,
+          "tpr": 0.8617,
+          "fpr": 0.6833,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3083,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 24,
+          "tpr": 0.8642,
+          "fpr": 0.9833,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3208,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 26,
+          "tpr": 0.8642,
+          "fpr": 1.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3208,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 28,
+          "tpr": 0.8642,
+          "fpr": 1.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3208,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 30,
+          "tpr": 0.8642,
+          "fpr": 1.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3208,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        },
+        {
+          "threshold": 32,
+          "tpr": 0.8642,
+          "fpr": 1.0,
+          "tpr_jpeg": 1.0,
+          "tpr_resize": 1.0,
+          "tpr_crop": 0.3208,
+          "tpr_photometric": 1.0,
+          "tpr_format": 1.0,
+          "tpr_combined": 1.0
+        }
+      ]
+    },
+    "cropping_resilience": {
+      "title": "Cropping resilience: pHash vs pHash + ORB/RANSAC",
+      "description": "Recall@1 on crop queries with pHash alone (\u03c4=10) versus pHash plus ORB geometric verification of the top-10 pHash neighbours (accept if RANSAC inliers \u2265 15). FPR measured on negatives.",
+      "files": [
+        "cropping_resilience.csv",
+        "cropping_resilience.png",
+        "orb_inlier_histogram.csv",
+        "orb_inlier_histogram.png"
+      ],
+      "charts": [
+        {
+          "title": "Crop recovery: pHash vs pHash+ORB (Recall@1)",
+          "type": "bar",
+          "x": "transform",
+          "series": [
+            "phash_recall_at_1",
+            "phash_orb_recall_at_1"
+          ],
+          "x_label": "",
+          "y_label": "Recall@1",
+          "data": [
+            {
+              "transform": "crop_center_80",
+              "queries": 60,
+              "phash_recall_at_1": 0.0333,
+              "phash_orb_recall_at_1": 0.9833,
+              "ms_per_query_both": 9.0
+            },
+            {
+              "transform": "crop_center_60",
+              "queries": 60,
+              "phash_recall_at_1": 0.0,
+              "phash_orb_recall_at_1": 0.3667,
+              "ms_per_query_both": 3.05
+            },
+            {
+              "transform": "crop_random_80",
+              "queries": 60,
+              "phash_recall_at_1": 0.0,
+              "phash_orb_recall_at_1": 0.6833,
+              "ms_per_query_both": 5.5
+            },
+            {
+              "transform": "crop_random_60",
+              "queries": 60,
+              "phash_recall_at_1": 0.0,
+              "phash_orb_recall_at_1": 0.1667,
+              "ms_per_query_both": 3.0
+            }
+          ]
+        },
+        {
+          "title": "RANSAC inliers: true source vs wrong candidates (crop queries)",
+          "type": "bar",
+          "x": "inliers",
+          "series": [
+            "true_source",
+            "wrong_candidate"
+          ],
+          "x_label": "",
+          "y_label": "pairs",
+          "data": [
+            {
+              "inliers": "0-4",
+              "true_source": 0,
+              "wrong_candidate": 2253
+            },
+            {
+              "inliers": "5-9",
+              "true_source": 0,
+              "wrong_candidate": 15
+            },
+            {
+              "inliers": "10-14",
+              "true_source": 0,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "15-19",
+              "true_source": 0,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "20-29",
+              "true_source": 0,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "30-49",
+              "true_source": 3,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "50-99",
+              "true_source": 19,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "100-199",
+              "true_source": 52,
+              "wrong_candidate": 0
+            },
+            {
+              "inliers": "200+",
+              "true_source": 58,
+              "wrong_candidate": 0
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "transform": "crop_center_80",
+          "queries": 60,
+          "phash_recall_at_1": 0.0333,
+          "phash_orb_recall_at_1": 0.9833,
+          "ms_per_query_both": 9.0
+        },
+        {
+          "transform": "crop_center_60",
+          "queries": 60,
+          "phash_recall_at_1": 0.0,
+          "phash_orb_recall_at_1": 0.3667,
+          "ms_per_query_both": 3.05
+        },
+        {
+          "transform": "crop_random_80",
+          "queries": 60,
+          "phash_recall_at_1": 0.0,
+          "phash_orb_recall_at_1": 0.6833,
+          "ms_per_query_both": 5.5
+        },
+        {
+          "transform": "crop_random_60",
+          "queries": 60,
+          "phash_recall_at_1": 0.0,
+          "phash_orb_recall_at_1": 0.1667,
+          "ms_per_query_both": 3.0
+        }
+      ]
+    },
+    "crypto_latency": {
+      "title": "Cryptographic primitive latency",
+      "description": "Wall-clock latency (\u00b5s) of SHA-256 over evidence-sized inputs, RFC 8785-style canonical JSON, Ed25519 (PyNaCl/libsodium) sign + verify of a custody event, RFC 9162 leaf hashing, and witness evaluation of one checkpoint. Single-threaded on the benchmark host; absolute numbers are machine-dependent.",
+      "files": [
+        "crypto_latency.csv",
+        "crypto_latency.png"
+      ],
+      "charts": [
+        {
+          "title": "Cryptographic primitive latency (median)",
+          "type": "bar",
+          "x": "operation",
+          "series": [
+            "median_us"
+          ],
+          "x_label": "",
+          "y_label": "\u00b5s (log scale)",
+          "data": [
+            {
+              "operation": "SHA-256 100 KB",
+              "median_us": 47.066
+            },
+            {
+              "operation": "SHA-256 1 MB",
+              "median_us": 494.109
+            },
+            {
+              "operation": "SHA-256 10 MB",
+              "median_us": 4807.024
+            },
+            {
+              "operation": "canonical JSON (event)",
+              "median_us": 4.222
+            },
+            {
+              "operation": "Ed25519 sign (event)",
+              "median_us": 16.412
+            },
+            {
+              "operation": "Ed25519 verify (event)",
+              "median_us": 37.951
+            },
+            {
+              "operation": "RFC 9162 leaf hash",
+              "median_us": 0.572
+            },
+            {
+              "operation": "Witness evaluate (sig + consistency 512\u21921024)",
+              "median_us": 43.639
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "operation": "SHA-256 100 KB",
+          "mean_us": 47.94,
+          "median_us": 47.066,
+          "p95_us": 51.869,
+          "reps": 1000,
+          "throughput_MBps": 2124.7
+        },
+        {
+          "operation": "SHA-256 1 MB",
+          "mean_us": 514.672,
+          "median_us": 494.109,
+          "p95_us": 642.634,
+          "reps": 100,
+          "throughput_MBps": 2023.8
+        },
+        {
+          "operation": "SHA-256 10 MB",
+          "mean_us": 4828.664,
+          "median_us": 4807.024,
+          "p95_us": 4970.992,
+          "reps": 20,
+          "throughput_MBps": 2080.3
+        },
+        {
+          "operation": "canonical JSON (event)",
+          "mean_us": 4.323,
+          "median_us": 4.222,
+          "p95_us": 4.552,
+          "reps": 1000
+        },
+        {
+          "operation": "Ed25519 sign (event)",
+          "mean_us": 16.973,
+          "median_us": 16.412,
+          "p95_us": 18.685,
+          "reps": 1000
+        },
+        {
+          "operation": "Ed25519 verify (event)",
+          "mean_us": 38.763,
+          "median_us": 37.951,
+          "p95_us": 42.21,
+          "reps": 1000
+        },
+        {
+          "operation": "RFC 9162 leaf hash",
+          "mean_us": 0.596,
+          "median_us": 0.572,
+          "p95_us": 0.636,
+          "reps": 1000
+        },
+        {
+          "operation": "Witness evaluate (sig + consistency 512\u21921024)",
+          "mean_us": 44.394,
+          "median_us": 43.639,
+          "p95_us": 47.494,
+          "reps": 250
+        }
+      ]
+    },
+    "merkle_scaling": {
+      "title": "RFC 9162 Merkle log scaling",
+      "description": "Root computation, inclusion-proof generation/verification and consistency-proof generation/verification (n/2 \u2192 n) as the log grows. Proof length grows as \u2308log2 n\u2309; verification stays in the microsecond range. Generation here recomputes subtree hashes from leaves (no cached interior nodes).",
+      "files": [
+        "merkle_scaling.csv",
+        "merkle_generation.png",
+        "merkle_verification.png",
+        "merkle_proof_size.png"
+      ],
+      "charts": [
+        {
+          "title": "Proof generation time vs tree size",
+          "type": "line",
+          "x": "tree_size",
+          "series": [
+            "root_ms",
+            "inclusion_gen_ms",
+            "consistency_gen_ms"
+          ],
+          "x_label": "tree size",
+          "y_label": "ms",
+          "data": [
+            {
+              "tree_size": 20,
+              "root_ms": 0.01,
+              "inclusion_gen_ms": 0.009,
+              "inclusion_verify_us": 1.538,
+              "inclusion_proof_len": 3,
+              "consistency_gen_ms": 0.01,
+              "consistency_verify_us": 2.415,
+              "consistency_proof_len": 5
+            },
+            {
+              "tree_size": 32,
+              "root_ms": 0.013,
+              "inclusion_gen_ms": 0.015,
+              "inclusion_verify_us": 2.371,
+              "inclusion_proof_len": 5,
+              "consistency_gen_ms": 0.008,
+              "consistency_verify_us": 0.883,
+              "consistency_proof_len": 1
+            },
+            {
+              "tree_size": 74,
+              "root_ms": 0.03,
+              "inclusion_gen_ms": 0.033,
+              "inclusion_verify_us": 3.125,
+              "inclusion_proof_len": 7,
+              "consistency_gen_ms": 0.034,
+              "consistency_verify_us": 4.188,
+              "consistency_proof_len": 8
+            },
+            {
+              "tree_size": 163,
+              "root_ms": 0.064,
+              "inclusion_gen_ms": 0.077,
+              "inclusion_verify_us": 3.623,
+              "inclusion_proof_len": 8,
+              "consistency_gen_ms": 0.074,
+              "consistency_verify_us": 4.615,
+              "consistency_proof_len": 9
+            },
+            {
+              "tree_size": 334,
+              "root_ms": 0.129,
+              "inclusion_gen_ms": 0.137,
+              "inclusion_verify_us": 3.978,
+              "inclusion_proof_len": 9,
+              "consistency_gen_ms": 0.137,
+              "consistency_verify_us": 5.724,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 523,
+              "root_ms": 0.2,
+              "inclusion_gen_ms": 0.211,
+              "inclusion_verify_us": 4.754,
+              "inclusion_proof_len": 10,
+              "consistency_gen_ms": 0.221,
+              "consistency_verify_us": 5.436,
+              "consistency_proof_len": 11
+            },
+            {
+              "tree_size": 1177,
+              "root_ms": 0.453,
+              "inclusion_gen_ms": 0.468,
+              "inclusion_verify_us": 4.931,
+              "inclusion_proof_len": 11,
+              "consistency_gen_ms": 0.479,
+              "consistency_verify_us": 5.415,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 2676,
+              "root_ms": 1.034,
+              "inclusion_gen_ms": 1.065,
+              "inclusion_verify_us": 5.252,
+              "inclusion_proof_len": 12,
+              "consistency_gen_ms": 1.087,
+              "consistency_verify_us": 7.073,
+              "consistency_proof_len": 12
+            },
+            {
+              "tree_size": 4396,
+              "root_ms": 1.741,
+              "inclusion_gen_ms": 1.764,
+              "inclusion_verify_us": 5.886,
+              "inclusion_proof_len": 13,
+              "consistency_gen_ms": 1.779,
+              "consistency_verify_us": 7.177,
+              "consistency_proof_len": 13
+            },
+            {
+              "tree_size": 9060,
+              "root_ms": 3.572,
+              "inclusion_gen_ms": 3.672,
+              "inclusion_verify_us": 6.41,
+              "inclusion_proof_len": 14,
+              "consistency_gen_ms": 3.665,
+              "consistency_verify_us": 8.079,
+              "consistency_proof_len": 14
+            },
+            {
+              "tree_size": 20435,
+              "root_ms": 8.125,
+              "inclusion_gen_ms": 8.17,
+              "inclusion_verify_us": 7.309,
+              "inclusion_proof_len": 15,
+              "consistency_gen_ms": 8.32,
+              "consistency_verify_us": 10.026,
+              "consistency_proof_len": 16
+            },
+            {
+              "tree_size": 33127,
+              "root_ms": 13.178,
+              "inclusion_gen_ms": 13.672,
+              "inclusion_verify_us": 7.179,
+              "inclusion_proof_len": 16,
+              "consistency_gen_ms": 14.038,
+              "consistency_verify_us": 9.334,
+              "consistency_proof_len": 17
+            },
+            {
+              "tree_size": 71557,
+              "root_ms": 29.713,
+              "inclusion_gen_ms": 29.475,
+              "inclusion_verify_us": 7.501,
+              "inclusion_proof_len": 17,
+              "consistency_gen_ms": 29.713,
+              "consistency_verify_us": 9.659,
+              "consistency_proof_len": 17
+            }
+          ]
+        },
+        {
+          "title": "Proof verification time vs tree size",
+          "type": "line",
+          "x": "tree_size",
+          "series": [
+            "inclusion_verify_us",
+            "consistency_verify_us"
+          ],
+          "x_label": "tree size",
+          "y_label": "\u00b5s",
+          "data": [
+            {
+              "tree_size": 20,
+              "root_ms": 0.01,
+              "inclusion_gen_ms": 0.009,
+              "inclusion_verify_us": 1.538,
+              "inclusion_proof_len": 3,
+              "consistency_gen_ms": 0.01,
+              "consistency_verify_us": 2.415,
+              "consistency_proof_len": 5
+            },
+            {
+              "tree_size": 32,
+              "root_ms": 0.013,
+              "inclusion_gen_ms": 0.015,
+              "inclusion_verify_us": 2.371,
+              "inclusion_proof_len": 5,
+              "consistency_gen_ms": 0.008,
+              "consistency_verify_us": 0.883,
+              "consistency_proof_len": 1
+            },
+            {
+              "tree_size": 74,
+              "root_ms": 0.03,
+              "inclusion_gen_ms": 0.033,
+              "inclusion_verify_us": 3.125,
+              "inclusion_proof_len": 7,
+              "consistency_gen_ms": 0.034,
+              "consistency_verify_us": 4.188,
+              "consistency_proof_len": 8
+            },
+            {
+              "tree_size": 163,
+              "root_ms": 0.064,
+              "inclusion_gen_ms": 0.077,
+              "inclusion_verify_us": 3.623,
+              "inclusion_proof_len": 8,
+              "consistency_gen_ms": 0.074,
+              "consistency_verify_us": 4.615,
+              "consistency_proof_len": 9
+            },
+            {
+              "tree_size": 334,
+              "root_ms": 0.129,
+              "inclusion_gen_ms": 0.137,
+              "inclusion_verify_us": 3.978,
+              "inclusion_proof_len": 9,
+              "consistency_gen_ms": 0.137,
+              "consistency_verify_us": 5.724,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 523,
+              "root_ms": 0.2,
+              "inclusion_gen_ms": 0.211,
+              "inclusion_verify_us": 4.754,
+              "inclusion_proof_len": 10,
+              "consistency_gen_ms": 0.221,
+              "consistency_verify_us": 5.436,
+              "consistency_proof_len": 11
+            },
+            {
+              "tree_size": 1177,
+              "root_ms": 0.453,
+              "inclusion_gen_ms": 0.468,
+              "inclusion_verify_us": 4.931,
+              "inclusion_proof_len": 11,
+              "consistency_gen_ms": 0.479,
+              "consistency_verify_us": 5.415,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 2676,
+              "root_ms": 1.034,
+              "inclusion_gen_ms": 1.065,
+              "inclusion_verify_us": 5.252,
+              "inclusion_proof_len": 12,
+              "consistency_gen_ms": 1.087,
+              "consistency_verify_us": 7.073,
+              "consistency_proof_len": 12
+            },
+            {
+              "tree_size": 4396,
+              "root_ms": 1.741,
+              "inclusion_gen_ms": 1.764,
+              "inclusion_verify_us": 5.886,
+              "inclusion_proof_len": 13,
+              "consistency_gen_ms": 1.779,
+              "consistency_verify_us": 7.177,
+              "consistency_proof_len": 13
+            },
+            {
+              "tree_size": 9060,
+              "root_ms": 3.572,
+              "inclusion_gen_ms": 3.672,
+              "inclusion_verify_us": 6.41,
+              "inclusion_proof_len": 14,
+              "consistency_gen_ms": 3.665,
+              "consistency_verify_us": 8.079,
+              "consistency_proof_len": 14
+            },
+            {
+              "tree_size": 20435,
+              "root_ms": 8.125,
+              "inclusion_gen_ms": 8.17,
+              "inclusion_verify_us": 7.309,
+              "inclusion_proof_len": 15,
+              "consistency_gen_ms": 8.32,
+              "consistency_verify_us": 10.026,
+              "consistency_proof_len": 16
+            },
+            {
+              "tree_size": 33127,
+              "root_ms": 13.178,
+              "inclusion_gen_ms": 13.672,
+              "inclusion_verify_us": 7.179,
+              "inclusion_proof_len": 16,
+              "consistency_gen_ms": 14.038,
+              "consistency_verify_us": 9.334,
+              "consistency_proof_len": 17
+            },
+            {
+              "tree_size": 71557,
+              "root_ms": 29.713,
+              "inclusion_gen_ms": 29.475,
+              "inclusion_verify_us": 7.501,
+              "inclusion_proof_len": 17,
+              "consistency_gen_ms": 29.713,
+              "consistency_verify_us": 9.659,
+              "consistency_proof_len": 17
+            }
+          ]
+        },
+        {
+          "title": "Proof length (hashes) vs tree size",
+          "type": "line",
+          "x": "tree_size",
+          "series": [
+            "inclusion_proof_len",
+            "consistency_proof_len"
+          ],
+          "x_label": "tree size",
+          "y_label": "hashes",
+          "data": [
+            {
+              "tree_size": 20,
+              "root_ms": 0.01,
+              "inclusion_gen_ms": 0.009,
+              "inclusion_verify_us": 1.538,
+              "inclusion_proof_len": 3,
+              "consistency_gen_ms": 0.01,
+              "consistency_verify_us": 2.415,
+              "consistency_proof_len": 5
+            },
+            {
+              "tree_size": 32,
+              "root_ms": 0.013,
+              "inclusion_gen_ms": 0.015,
+              "inclusion_verify_us": 2.371,
+              "inclusion_proof_len": 5,
+              "consistency_gen_ms": 0.008,
+              "consistency_verify_us": 0.883,
+              "consistency_proof_len": 1
+            },
+            {
+              "tree_size": 74,
+              "root_ms": 0.03,
+              "inclusion_gen_ms": 0.033,
+              "inclusion_verify_us": 3.125,
+              "inclusion_proof_len": 7,
+              "consistency_gen_ms": 0.034,
+              "consistency_verify_us": 4.188,
+              "consistency_proof_len": 8
+            },
+            {
+              "tree_size": 163,
+              "root_ms": 0.064,
+              "inclusion_gen_ms": 0.077,
+              "inclusion_verify_us": 3.623,
+              "inclusion_proof_len": 8,
+              "consistency_gen_ms": 0.074,
+              "consistency_verify_us": 4.615,
+              "consistency_proof_len": 9
+            },
+            {
+              "tree_size": 334,
+              "root_ms": 0.129,
+              "inclusion_gen_ms": 0.137,
+              "inclusion_verify_us": 3.978,
+              "inclusion_proof_len": 9,
+              "consistency_gen_ms": 0.137,
+              "consistency_verify_us": 5.724,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 523,
+              "root_ms": 0.2,
+              "inclusion_gen_ms": 0.211,
+              "inclusion_verify_us": 4.754,
+              "inclusion_proof_len": 10,
+              "consistency_gen_ms": 0.221,
+              "consistency_verify_us": 5.436,
+              "consistency_proof_len": 11
+            },
+            {
+              "tree_size": 1177,
+              "root_ms": 0.453,
+              "inclusion_gen_ms": 0.468,
+              "inclusion_verify_us": 4.931,
+              "inclusion_proof_len": 11,
+              "consistency_gen_ms": 0.479,
+              "consistency_verify_us": 5.415,
+              "consistency_proof_len": 10
+            },
+            {
+              "tree_size": 2676,
+              "root_ms": 1.034,
+              "inclusion_gen_ms": 1.065,
+              "inclusion_verify_us": 5.252,
+              "inclusion_proof_len": 12,
+              "consistency_gen_ms": 1.087,
+              "consistency_verify_us": 7.073,
+              "consistency_proof_len": 12
+            },
+            {
+              "tree_size": 4396,
+              "root_ms": 1.741,
+              "inclusion_gen_ms": 1.764,
+              "inclusion_verify_us": 5.886,
+              "inclusion_proof_len": 13,
+              "consistency_gen_ms": 1.779,
+              "consistency_verify_us": 7.177,
+              "consistency_proof_len": 13
+            },
+            {
+              "tree_size": 9060,
+              "root_ms": 3.572,
+              "inclusion_gen_ms": 3.672,
+              "inclusion_verify_us": 6.41,
+              "inclusion_proof_len": 14,
+              "consistency_gen_ms": 3.665,
+              "consistency_verify_us": 8.079,
+              "consistency_proof_len": 14
+            },
+            {
+              "tree_size": 20435,
+              "root_ms": 8.125,
+              "inclusion_gen_ms": 8.17,
+              "inclusion_verify_us": 7.309,
+              "inclusion_proof_len": 15,
+              "consistency_gen_ms": 8.32,
+              "consistency_verify_us": 10.026,
+              "consistency_proof_len": 16
+            },
+            {
+              "tree_size": 33127,
+              "root_ms": 13.178,
+              "inclusion_gen_ms": 13.672,
+              "inclusion_verify_us": 7.179,
+              "inclusion_proof_len": 16,
+              "consistency_gen_ms": 14.038,
+              "consistency_verify_us": 9.334,
+              "consistency_proof_len": 17
+            },
+            {
+              "tree_size": 71557,
+              "root_ms": 29.713,
+              "inclusion_gen_ms": 29.475,
+              "inclusion_verify_us": 7.501,
+              "inclusion_proof_len": 17,
+              "consistency_gen_ms": 29.713,
+              "consistency_verify_us": 9.659,
+              "consistency_proof_len": 17
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "tree_size": 20,
+          "root_ms": 0.01,
+          "inclusion_gen_ms": 0.009,
+          "inclusion_verify_us": 1.538,
+          "inclusion_proof_len": 3,
+          "consistency_gen_ms": 0.01,
+          "consistency_verify_us": 2.415,
+          "consistency_proof_len": 5
+        },
+        {
+          "tree_size": 32,
+          "root_ms": 0.013,
+          "inclusion_gen_ms": 0.015,
+          "inclusion_verify_us": 2.371,
+          "inclusion_proof_len": 5,
+          "consistency_gen_ms": 0.008,
+          "consistency_verify_us": 0.883,
+          "consistency_proof_len": 1
+        },
+        {
+          "tree_size": 74,
+          "root_ms": 0.03,
+          "inclusion_gen_ms": 0.033,
+          "inclusion_verify_us": 3.125,
+          "inclusion_proof_len": 7,
+          "consistency_gen_ms": 0.034,
+          "consistency_verify_us": 4.188,
+          "consistency_proof_len": 8
+        },
+        {
+          "tree_size": 163,
+          "root_ms": 0.064,
+          "inclusion_gen_ms": 0.077,
+          "inclusion_verify_us": 3.623,
+          "inclusion_proof_len": 8,
+          "consistency_gen_ms": 0.074,
+          "consistency_verify_us": 4.615,
+          "consistency_proof_len": 9
+        },
+        {
+          "tree_size": 334,
+          "root_ms": 0.129,
+          "inclusion_gen_ms": 0.137,
+          "inclusion_verify_us": 3.978,
+          "inclusion_proof_len": 9,
+          "consistency_gen_ms": 0.137,
+          "consistency_verify_us": 5.724,
+          "consistency_proof_len": 10
+        },
+        {
+          "tree_size": 523,
+          "root_ms": 0.2,
+          "inclusion_gen_ms": 0.211,
+          "inclusion_verify_us": 4.754,
+          "inclusion_proof_len": 10,
+          "consistency_gen_ms": 0.221,
+          "consistency_verify_us": 5.436,
+          "consistency_proof_len": 11
+        },
+        {
+          "tree_size": 1177,
+          "root_ms": 0.453,
+          "inclusion_gen_ms": 0.468,
+          "inclusion_verify_us": 4.931,
+          "inclusion_proof_len": 11,
+          "consistency_gen_ms": 0.479,
+          "consistency_verify_us": 5.415,
+          "consistency_proof_len": 10
+        },
+        {
+          "tree_size": 2676,
+          "root_ms": 1.034,
+          "inclusion_gen_ms": 1.065,
+          "inclusion_verify_us": 5.252,
+          "inclusion_proof_len": 12,
+          "consistency_gen_ms": 1.087,
+          "consistency_verify_us": 7.073,
+          "consistency_proof_len": 12
+        },
+        {
+          "tree_size": 4396,
+          "root_ms": 1.741,
+          "inclusion_gen_ms": 1.764,
+          "inclusion_verify_us": 5.886,
+          "inclusion_proof_len": 13,
+          "consistency_gen_ms": 1.779,
+          "consistency_verify_us": 7.177,
+          "consistency_proof_len": 13
+        },
+        {
+          "tree_size": 9060,
+          "root_ms": 3.572,
+          "inclusion_gen_ms": 3.672,
+          "inclusion_verify_us": 6.41,
+          "inclusion_proof_len": 14,
+          "consistency_gen_ms": 3.665,
+          "consistency_verify_us": 8.079,
+          "consistency_proof_len": 14
+        },
+        {
+          "tree_size": 20435,
+          "root_ms": 8.125,
+          "inclusion_gen_ms": 8.17,
+          "inclusion_verify_us": 7.309,
+          "inclusion_proof_len": 15,
+          "consistency_gen_ms": 8.32,
+          "consistency_verify_us": 10.026,
+          "consistency_proof_len": 16
+        },
+        {
+          "tree_size": 33127,
+          "root_ms": 13.178,
+          "inclusion_gen_ms": 13.672,
+          "inclusion_verify_us": 7.179,
+          "inclusion_proof_len": 16,
+          "consistency_gen_ms": 14.038,
+          "consistency_verify_us": 9.334,
+          "consistency_proof_len": 17
+        },
+        {
+          "tree_size": 71557,
+          "root_ms": 29.713,
+          "inclusion_gen_ms": 29.475,
+          "inclusion_verify_us": 7.501,
+          "inclusion_proof_len": 17,
+          "consistency_gen_ms": 29.713,
+          "consistency_verify_us": 9.659,
+          "consistency_proof_len": 17
+        }
+      ]
+    },
+    "witness_detection": {
+      "title": "Witness rollback / equivocation detection",
+      "description": "Randomised trials against the production witness decision logic. Each trial: the witness has accepted an honest checkpoint of size m; the (malicious) log then submits a checkpoint of size n. Attacks: rollback (n < m), same-size split view, forked history (an earlier entry rewritten, proof generated honestly from the forked tree), fork + replayed honest proof, and a checkpoint signed by an attacker key. Honest growth trials measure the false-alarm rate.",
+      "files": [
+        "witness_detection.csv",
+        "witness_detection.png"
+      ],
+      "charts": [
+        {
+          "title": "Witness outcome by scenario",
+          "type": "bar",
+          "x": "scenario",
+          "series": [
+            "detection_rate",
+            "false_alarm_rate"
+          ],
+          "x_label": "",
+          "y_label": "rate",
+          "data": [
+            {
+              "scenario": "honest_growth",
+              "trials": 1000,
+              "detection_rate": null,
+              "false_alarm_rate": 0.0,
+              "mean_eval_us": 57.35,
+              "reasons": "-"
+            },
+            {
+              "scenario": "rollback",
+              "trials": 1000,
+              "detection_rate": 1.0,
+              "false_alarm_rate": null,
+              "mean_eval_us": 47.7,
+              "reasons": "ROLLBACK=1000"
+            },
+            {
+              "scenario": "split_view_same_size",
+              "trials": 1000,
+              "detection_rate": 1.0,
+              "false_alarm_rate": null,
+              "mean_eval_us": 46.48,
+              "reasons": "EQUIVOCATION=1000"
+            },
+            {
+              "scenario": "forked_history",
+              "trials": 1000,
+              "detection_rate": 1.0,
+              "false_alarm_rate": null,
+              "mean_eval_us": 53.4,
+              "reasons": "EQUIVOCATION=1000"
+            },
+            {
+              "scenario": "fork_with_replayed_honest_proof",
+              "trials": 1000,
+              "detection_rate": 1.0,
+              "false_alarm_rate": null,
+              "mean_eval_us": 51.97,
+              "reasons": "EQUIVOCATION=1000"
+            },
+            {
+              "scenario": "forged_signature_attacker_key",
+              "trials": 1000,
+              "detection_rate": 1.0,
+              "false_alarm_rate": null,
+              "mean_eval_us": 2.36,
+              "reasons": "BAD_LOG_SIGNATURE=1000"
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "scenario": "honest_growth",
+          "trials": 1000,
+          "detection_rate": null,
+          "false_alarm_rate": 0.0,
+          "mean_eval_us": 57.35,
+          "reasons": "-"
+        },
+        {
+          "scenario": "rollback",
+          "trials": 1000,
+          "detection_rate": 1.0,
+          "false_alarm_rate": null,
+          "mean_eval_us": 47.7,
+          "reasons": "ROLLBACK=1000"
+        },
+        {
+          "scenario": "split_view_same_size",
+          "trials": 1000,
+          "detection_rate": 1.0,
+          "false_alarm_rate": null,
+          "mean_eval_us": 46.48,
+          "reasons": "EQUIVOCATION=1000"
+        },
+        {
+          "scenario": "forked_history",
+          "trials": 1000,
+          "detection_rate": 1.0,
+          "false_alarm_rate": null,
+          "mean_eval_us": 53.4,
+          "reasons": "EQUIVOCATION=1000"
+        },
+        {
+          "scenario": "fork_with_replayed_honest_proof",
+          "trials": 1000,
+          "detection_rate": 1.0,
+          "false_alarm_rate": null,
+          "mean_eval_us": 51.97,
+          "reasons": "EQUIVOCATION=1000"
+        },
+        {
+          "scenario": "forged_signature_attacker_key",
+          "trials": 1000,
+          "detection_rate": 1.0,
+          "false_alarm_rate": null,
+          "mean_eval_us": 2.36,
+          "reasons": "BAD_LOG_SIGNATURE=1000"
+        }
+      ]
+    },
+    "ablation": {
+      "title": "Ablation: (A) SHA-256 \u2192 (B) +pHash \u2192 (C) +ORB \u2192 (D) full TrustChain + MediaTrace",
+      "description": "All transformed queries + negatives. 10% of registered originals are tampered in storage after registration (one byte flipped) to measure silent-corruption exposure. Recovery = correct top-1 candidate. Configurations A\u2013C cannot tell a tampered original from a good one; D runs full cryptographic verification (storage SHA-256, Ed25519 event signature, RFC 9162 inclusion, checkpoint signature, witness co-signature) on the recovered record. Latency excludes one-off ORB feature extraction (pre-computed; mean 1.6 ms per image) and pHash computation, and includes candidate ranking, ORB matching and (D) verification.",
+      "files": [
+        "ablation.csv",
+        "ablation.png",
+        "ablation_latency.png"
+      ],
+      "charts": [
+        {
+          "title": "Ablation study",
+          "type": "bar",
+          "x": "config",
+          "series": [
+            "recovery_rate",
+            "verified_provenance_rate",
+            "fpr_negatives",
+            "tampered_detected_rate"
+          ],
+          "x_label": "",
+          "y_label": "rate",
+          "data": [
+            {
+              "config": "A_sha256_only",
+              "recovery_rate": 0.05,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 6,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 0.078
+            },
+            {
+              "config": "B_sha256_phash",
+              "recovery_rate": 0.8017,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 96,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 0.081
+            },
+            {
+              "config": "C_sha256_phash_orb",
+              "recovery_rate": 0.91,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 111,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 5.273
+            },
+            {
+              "config": "D_full_trustchain_mediatrace",
+              "recovery_rate": 0.91,
+              "verified_provenance_rate": 0.8175,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 111,
+              "tampered_detected_rate": 1.0,
+              "mean_latency_ms": 7.315
+            }
+          ]
+        },
+        {
+          "title": "Ablation: mean per-query latency",
+          "type": "bar",
+          "x": "config",
+          "series": [
+            "mean_latency_ms"
+          ],
+          "x_label": "",
+          "y_label": "ms",
+          "data": [
+            {
+              "config": "A_sha256_only",
+              "recovery_rate": 0.05,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 6,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 0.078
+            },
+            {
+              "config": "B_sha256_phash",
+              "recovery_rate": 0.8017,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 96,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 0.081
+            },
+            {
+              "config": "C_sha256_phash_orb",
+              "recovery_rate": 0.91,
+              "verified_provenance_rate": 0.0,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 111,
+              "tampered_detected_rate": 0.0,
+              "mean_latency_ms": 5.273
+            },
+            {
+              "config": "D_full_trustchain_mediatrace",
+              "recovery_rate": 0.91,
+              "verified_provenance_rate": 0.8175,
+              "fpr_negatives": 0.0,
+              "tampered_originals_returned": 111,
+              "tampered_detected_rate": 1.0,
+              "mean_latency_ms": 7.315
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "config": "A_sha256_only",
+          "recovery_rate": 0.05,
+          "verified_provenance_rate": 0.0,
+          "fpr_negatives": 0.0,
+          "tampered_originals_returned": 6,
+          "tampered_detected_rate": 0.0,
+          "mean_latency_ms": 0.078
+        },
+        {
+          "config": "B_sha256_phash",
+          "recovery_rate": 0.8017,
+          "verified_provenance_rate": 0.0,
+          "fpr_negatives": 0.0,
+          "tampered_originals_returned": 96,
+          "tampered_detected_rate": 0.0,
+          "mean_latency_ms": 0.081
+        },
+        {
+          "config": "C_sha256_phash_orb",
+          "recovery_rate": 0.91,
+          "verified_provenance_rate": 0.0,
+          "fpr_negatives": 0.0,
+          "tampered_originals_returned": 111,
+          "tampered_detected_rate": 0.0,
+          "mean_latency_ms": 5.273
+        },
+        {
+          "config": "D_full_trustchain_mediatrace",
+          "recovery_rate": 0.91,
+          "verified_provenance_rate": 0.8175,
+          "fpr_negatives": 0.0,
+          "tampered_originals_returned": 111,
+          "tampered_detected_rate": 1.0,
+          "mean_latency_ms": 7.315
+        }
+      ]
+    },
+    "metadata_stripping": {
+      "title": "Metadata stripping: SHA-256 vs pHash",
+      "description": "Each registered original (JPEG with EXIF) is stripped of EXIF/XMP/C2PA/IPTC APP segments at the byte level (pixels untouched), stripped + re-encoded (Q95), and stripped + converted to PNG. Measures whether SHA-256 still matches, EXIF survival, and pHash distance to the original. Note: the synthetic originals carry EXIF but no C2PA manifest (embedding one requires a signing certificate); APP11 (C2PA/JUMBF) removal is exercised by the same stripping code path.",
+      "files": [
+        "metadata_stripping.csv",
+        "metadata_stripping.png"
+      ],
+      "charts": [
+        {
+          "title": "After metadata stripping",
+          "type": "bar",
+          "x": "variant",
+          "series": [
+            "sha256_match_rate",
+            "exif_retained_rate",
+            "phash_match_rate_tau10"
+          ],
+          "x_label": "",
+          "y_label": "rate",
+          "data": [
+            {
+              "variant": "byte_strip",
+              "originals": 60,
+              "sha256_match_rate": 0.0,
+              "exif_retained_rate": 0.0,
+              "phash_mean_distance": 0.0,
+              "phash_max_distance": 0,
+              "phash_match_rate_tau10": 1.0
+            },
+            {
+              "variant": "strip_reencode_q95",
+              "originals": 60,
+              "sha256_match_rate": 0.0,
+              "exif_retained_rate": 0.0,
+              "phash_mean_distance": 0.0333,
+              "phash_max_distance": 2,
+              "phash_match_rate_tau10": 1.0
+            },
+            {
+              "variant": "strip_to_png",
+              "originals": 60,
+              "sha256_match_rate": 0.0,
+              "exif_retained_rate": 0.0,
+              "phash_mean_distance": 0.0,
+              "phash_max_distance": 0,
+              "phash_match_rate_tau10": 1.0
+            }
+          ]
+        }
+      ],
+      "table": [
+        {
+          "variant": "byte_strip",
+          "originals": 60,
+          "sha256_match_rate": 0.0,
+          "exif_retained_rate": 0.0,
+          "phash_mean_distance": 0.0,
+          "phash_max_distance": 0,
+          "phash_match_rate_tau10": 1.0
+        },
+        {
+          "variant": "strip_reencode_q95",
+          "originals": 60,
+          "sha256_match_rate": 0.0,
+          "exif_retained_rate": 0.0,
+          "phash_mean_distance": 0.0333,
+          "phash_max_distance": 2,
+          "phash_match_rate_tau10": 1.0
+        },
+        {
+          "variant": "strip_to_png",
+          "originals": 60,
+          "sha256_match_rate": 0.0,
+          "exif_retained_rate": 0.0,
+          "phash_mean_distance": 0.0,
+          "phash_max_distance": 0,
+          "phash_match_rate_tau10": 1.0
+        }
+      ]
+    }
+  }
+}

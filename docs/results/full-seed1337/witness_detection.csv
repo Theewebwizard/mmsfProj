@@ -1,0 +1,7 @@
+scenario,trials,detection_rate,false_alarm_rate,mean_eval_us,reasons
+honest_growth,1000,,0.0,57.35,-
+rollback,1000,1.0,,47.7,ROLLBACK=1000
+split_view_same_size,1000,1.0,,46.48,EQUIVOCATION=1000
+forked_history,1000,1.0,,53.4,EQUIVOCATION=1000
+fork_with_replayed_honest_proof,1000,1.0,,51.97,EQUIVOCATION=1000
+forged_signature_attacker_key,1000,1.0,,2.36,BAD_LOG_SIGNATURE=1000

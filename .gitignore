@@ -13,8 +13,8 @@ var/
 sdist/
 wheels/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 *.pyc
 *.pyo
 *.pyd
@@ -56,7 +56,9 @@ out/
 !.env.example
 
 # Keys / secrets
-keys/
+/keys/
+backend/keys/
+witness/keys/
 *.pem
 *.key
 *.p8
@@ -81,11 +83,11 @@ htmlcov/
 # Alembic
 backend/alembic/versions/*.pyc
 
-# Data / Experiments
+# Data / Experiments (generated; reproducible from fixed seeds)
 experiments/results/
-experiments/data/synthetic/
-*.csv
-!experiments/results/.gitkeep
+experiments/data/
+# Frontend build
+frontend/dist/
 
 # Misc
 *.log
@@ -95,3 +97,4 @@ experiments/data/synthetic/
 *.sqlite
 *.sqlite3
 
+*.tsbuildinfo

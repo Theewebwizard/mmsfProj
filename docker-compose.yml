@@ -1,4 +1,4 @@
-version: "3.9"
+# Prerequisite: python scripts/generate_keys.py   (creates ./keys, git-ignored)
 
 services:
   postgres:
@@ -16,10 +16,11 @@ services:
       test: ["CMD-SHELL", "pg_isready -U trustchain"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
 
   minio:
-    image: minio/minio:latest
+    build:
+      context: ./infra/minio
     restart: unless-stopped
     environment:
       MINIO_ROOT_USER: minioadmin
@@ -31,15 +32,36 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:9000/minio/health/live"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+
+  witness:
+    build:
+      context: ./witness
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      # The witness keeps its OWN state, independent of the primary database.
+      WITNESS_DB_URL: sqlite+aiosqlite:////data/witness.db
+      WITNESS_TOKEN: witness_secret_token_change_me
+      WITNESS_KEY_DIR: /run/keys
+      WITNESS_ALLOW_KEY_GENERATION: "false"
+      WITNESS_LOG_ID: trustchain-log-v1
+    volumes:
+      - ./keys/witness:/run/keys:ro
+      - witness_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   api:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -47,6 +69,8 @@ services:
       postgres:
         condition: service_healthy
       minio:
+        condition: service_healthy
+      witness:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+asyncpg://trustchain:trustchain@postgres:5432/trustchain
@@ -57,32 +81,30 @@ services:
       MINIO_SECURE: "false"
       JWT_SECRET: change_me_in_production_min_32_chars_long
       JWT_ALGORITHM: HS256
-      JWT_EXPIRE_MINUTES: "60"
-      KEY_DIR: /app/keys
+      JWT_EXPIRE_MINUTES: "480"
+      KEY_DIR: /run/keys
+      ALLOW_KEY_GENERATION: "false"
+      LOG_ID: trustchain-log-v1
+      WITNESS_URL: http://witness:8001
+      WITNESS_TOKEN: witness_secret_token_change_me
+      EXPERIMENTS_DIR: /experiments
+      TRUSTCHAIN_BACKEND_DIR: /app
+      TRUSTCHAIN_WITNESS_DIR: /witness
     volumes:
-      - ./backend:/app
-      - api_keys:/app/keys
+      - ./keys/api:/run/keys:ro
+      - ./experiments:/experiments
+      - ./witness:/witness:ro
 
-  witness:
+  frontend:
     build:
-      context: ./witness
-      dockerfile: Dockerfile
+      context: ./frontend
     restart: unless-stopped
     ports:
-      - "8001:8001"
+      - "8080:80"
     depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      WITNESS_DB_URL: postgresql+asyncpg://trustchain:trustchain@postgres:5432/trustchain
-      WITNESS_TOKEN: witness_secret_token_change_me
-    volumes:
-      - ./witness:/app
-      - witness_keys:/app/keys
+      - api
 
 volumes:
   postgres_data:
   minio_data:
-  api_keys:
-  witness_keys:
-
+  witness_data:

@@ -21,3 +21,11 @@ class LogEntry(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
+from sqlalchemy import event as _sa_event  # noqa: E402
+
+from app.models.custody import _forbid  # noqa: E402
+
+_sa_event.listen(LogEntry, "before_update", _forbid)
+_sa_event.listen(LogEntry, "before_delete", _forbid)

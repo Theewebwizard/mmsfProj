@@ -117,3 +117,39 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)) -> Token
         user_id=user.id,
         role=role_str,
     )
+
+
+# ---------------------------------------------------------------------------
+# Current user / directory (used for custody transfers)
+# ---------------------------------------------------------------------------
+
+from app.deps import get_current_user  # noqa: E402
+
+
+class UserOut(BaseModel):
+    id: uuid.UUID
+    email: str
+    full_name: str
+    role: str
+
+
+def _user_out(u: User) -> UserOut:
+    return UserOut(
+        id=u.id,
+        email=u.email,
+        full_name=u.full_name,
+        role=u.role.value if hasattr(u.role, "value") else str(u.role),
+    )
+
+
+@router.get("/me", response_model=UserOut)
+async def me(current_user: User = Depends(get_current_user)) -> UserOut:
+    return _user_out(current_user)
+
+
+@router.get("/users", response_model=list[UserOut])
+async def list_users(
+    db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)
+) -> list[UserOut]:
+    rows = (await db.execute(select(User).order_by(User.full_name))).scalars()
+    return [_user_out(u) for u in rows]

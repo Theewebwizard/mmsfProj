@@ -1,14 +1,39 @@
 import os
-import io
-import pytest
-import pytest_asyncio
-from unittest.mock import patch
-from httpx import AsyncClient, ASGITransport
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from app.main import app
-from app.database import Base
-from app import deps
-from app.storage.minio_client import MinIOClient, minio_client
+import sys
+import tempfile
+from pathlib import Path
+
+# --- deterministic, throw-away test keys (never used outside the test suite) ---
+_TEST_KEY_DIR = tempfile.mkdtemp(prefix="tc-test-keys-")
+os.environ["KEY_DIR"] = _TEST_KEY_DIR
+os.environ["TRUSTCHAIN_CUSTODY_KEY"] = "01" * 32
+os.environ["TRUSTCHAIN_CHECKPOINT_KEY"] = "02" * 32
+os.environ["TRUSTCHAIN_WITNESS_KEY"] = "03" * 32
+os.environ["WITNESS_KEY_DIR"] = _TEST_KEY_DIR
+os.environ["EXPERIMENTS_DIR"] = tempfile.mkdtemp(prefix="tc-test-exp-")
+
+from nacl.signing import SigningKey  # noqa: E402
+
+os.environ["TRUSTCHAIN_CHECKPOINT_PUBKEY"] = bytes(SigningKey(bytes.fromhex("02" * 32)).verify_key).hex()
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "witness"))
+sys.path.insert(0, str(REPO_ROOT / "cli"))
+
+import pytest  # noqa: E402
+import pytest_asyncio  # noqa: E402
+import httpx  # noqa: E402
+from httpx import AsyncClient, ASGITransport  # noqa: E402
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession  # noqa: E402
+
+from app.main import app  # noqa: E402
+from app.database import Base  # noqa: E402
+from app import deps  # noqa: E402
+from app.storage.minio_client import MinIOClient, minio_client  # noqa: E402
+from app.services.witness_client import witness_client  # noqa: E402
+
+from witness_service import main as witness_main  # noqa: E402
+from witness_service.db import init_db as witness_init_db  # noqa: E402
 
 TEST_DB_URL = "sqlite+aiosqlite:///./test.db"
 
@@ -77,7 +102,42 @@ async def db_session(db_engine):
 
 
 @pytest_asyncio.fixture(scope="function")
-async def client(db_session, monkeypatch):
+async def witness(tmp_path):
+    """The real Witness service, in-process, with its own SQLite database."""
+    engine = create_async_engine(f"sqlite+aiosqlite:///{tmp_path}/witness.db")
+    await witness_init_db(engine)
+    factory = async_sessionmaker(engine, expire_on_commit=False)
+
+    async def override():
+        async with factory() as s:
+            yield s
+
+    witness_main.app.dependency_overrides[witness_main.get_session] = override
+    witness_main.witness_key.cache_clear()
+    witness_client.transport = ASGITransport(app=witness_main.app)
+    witness_client.base_url = "http://witness"
+    yield witness_main.app
+    witness_client.transport = None
+    witness_client.base_url = None
+    witness_main.app.dependency_overrides.clear()
+    await engine.dispose()
+
+
+class _DownTransport(httpx.AsyncBaseTransport):
+    async def handle_async_request(self, request):
+        raise httpx.ConnectError("witness down (test)")
+
+
+@pytest.fixture
+def witness_down():
+    prev = witness_client.transport
+    witness_client.transport = _DownTransport()
+    yield
+    witness_client.transport = prev
+
+
+@pytest_asyncio.fixture(scope="function")
+async def client(db_session, monkeypatch, witness):
     mock_storage.clear()
 
     # Monkeypatch MinIOClient methods

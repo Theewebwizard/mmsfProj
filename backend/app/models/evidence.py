@@ -51,6 +51,7 @@ class Evidence(Base):
         default=C2PAStatus.PENDING,
     )
     c2pa_summary_json: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    exif_json: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     uploaded_by: Mapped[uuid.UUID] = mapped_column(
         PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False
     )

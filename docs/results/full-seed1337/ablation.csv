@@ -1,0 +1,5 @@
+config,recovery_rate,verified_provenance_rate,fpr_negatives,tampered_originals_returned,tampered_detected_rate,mean_latency_ms
+A_sha256_only,0.05,0.0,0.0,6,0.0,0.078
+B_sha256_phash,0.8017,0.0,0.0,96,0.0,0.081
+C_sha256_phash_orb,0.91,0.0,0.0,111,0.0,5.273
+D_full_trustchain_mediatrace,0.91,0.8175,0.0,111,1.0,7.315
