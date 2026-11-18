@@ -1,0 +1,9 @@
+operation,mean_us,median_us,p95_us,reps,throughput_MBps
+SHA-256 100 KB,47.94,47.066,51.869,1000,2124.7
+SHA-256 1 MB,514.672,494.109,642.634,100,2023.8
+SHA-256 10 MB,4828.664,4807.024,4970.992,20,2080.3
+canonical JSON (event),4.323,4.222,4.552,1000,
+Ed25519 sign (event),16.973,16.412,18.685,1000,
+Ed25519 verify (event),38.763,37.951,42.21,1000,
+RFC 9162 leaf hash,0.596,0.572,0.636,1000,
+Witness evaluate (sig + consistency 512→1024),44.394,43.639,47.494,250,

@@ -1,0 +1,4 @@
+variant,originals,sha256_match_rate,exif_retained_rate,phash_mean_distance,phash_max_distance,phash_match_rate_tau10
+byte_strip,60,0.0,0.0,0.0,0,1.0
+strip_reencode_q95,60,0.0,0.0,0.0333,2,1.0
+strip_to_png,60,0.0,0.0,0.0,0,1.0

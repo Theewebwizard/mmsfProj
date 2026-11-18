@@ -1,0 +1,88 @@
+{
+  "run": "6348c8b7",
+  "case_id": "5b73d91d-d389-4ec6-b28b-e8cf57550bc5",
+  "api": "http://localhost:8000/api/v1",
+  "steps": [
+    {
+      "scenario": "1a search ranks true source first",
+      "result": "PASS",
+      "hamming": 0,
+      "sha256_match": false,
+      "query_exif": false
+    },
+    {
+      "scenario": "1b verify-candidate (auditor)",
+      "result": "PASS",
+      "assessment": "VERIFIED_REGISTERED_ORIGINAL",
+      "relationship": "PERCEPTUAL_CANDIDATE"
+    },
+    {
+      "scenario": "1c offline CLI with pinned keys",
+      "result": "PASS",
+      "exit_code": 0,
+      "overall": " OVERALL: PASS"
+    },
+    {
+      "scenario": "1d CLI rejects the share itself as byte-identical original",
+      "result": "PASS",
+      "exit_code": 1
+    },
+    {
+      "scenario": "2a byte-integrity check detects overwrite",
+      "result": "PASS",
+      "registered": "e07ff4f9e2d7674a",
+      "recomputed": "eb7b69d08983c488"
+    },
+    {
+      "scenario": "2b recovery reports INTEGRITY_FAILURE",
+      "result": "PASS",
+      "failed_checks": [
+        "STORAGE_SHA256"
+      ]
+    },
+    {
+      "scenario": "2c offline CLI fails the tampered bytes",
+      "result": "PASS",
+      "exit_code": 1
+    },
+    {
+      "scenario": "3a replayed stale checkpoint rejected",
+      "result": "PASS",
+      "replayed_size": 10,
+      "witness_size": 11,
+      "reason": "ROLLBACK"
+    },
+    {
+      "scenario": "3b split-view (same size, different root) rejected",
+      "result": "PASS",
+      "reason": "EQUIVOCATION"
+    },
+    {
+      "scenario": "3c growth with forged consistency proof rejected",
+      "result": "PASS",
+      "reason": "EQUIVOCATION"
+    },
+    {
+      "scenario": "3d alerts persisted in witness DB",
+      "result": "PASS",
+      "alerts": 3
+    },
+    {
+      "scenario": "3e honest checkpoint still acknowledged",
+      "result": "PASS",
+      "tree_size": 12
+    },
+    {
+      "scenario": "4a search returns NO_MATCH",
+      "result": "PASS",
+      "gallery": 7
+    },
+    {
+      "scenario": "4b verify-candidate returns NO_MATCH",
+      "result": "PASS",
+      "relationship": "NONE"
+    }
+  ],
+  "passed": 14,
+  "total": 14
+}

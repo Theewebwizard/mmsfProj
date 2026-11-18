@@ -1,0 +1,5 @@
+transform,queries,phash_recall_at_1,phash_orb_recall_at_1,ms_per_query_both
+crop_center_80,60,0.0333,0.9833,9.0
+crop_center_60,60,0.0,0.3667,3.05
+crop_random_80,60,0.0,0.6833,5.5
+crop_random_60,60,0.0,0.1667,3.0

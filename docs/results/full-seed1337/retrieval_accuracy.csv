@@ -1,0 +1,22 @@
+transform,family,queries,precision_at_1,recall_at_1,recall_at_5,sha256_exact_rate,mean_hamming_true_source
+identity,none,60,1.0,1.0,1.0,1.0,0.0
+strip_metadata,metadata,60,1.0,1.0,1.0,0.0,0.0
+jpeg_q90,jpeg,60,1.0,1.0,1.0,0.0,0.0333
+jpeg_q70,jpeg,60,1.0,1.0,1.0,0.0,0.0333
+jpeg_q50,jpeg,60,1.0,1.0,1.0,0.0,0.1
+jpeg_q30,jpeg,60,1.0,1.0,1.0,0.0,0.1333
+resize_75,resize,60,1.0,1.0,1.0,0.0,0.1
+resize_50,resize,60,1.0,1.0,1.0,0.0,0.0667
+resize_25,resize,60,1.0,1.0,1.0,0.0,0.1
+crop_center_80,crop,60,1.0,0.0333,0.0333,0.0,9.0
+crop_center_60,crop,60,,0.0,0.0,0.0,
+crop_random_80,crop,60,,0.0,0.0,0.0,
+crop_random_60,crop,60,,0.0,0.0,0.0,
+brightness_+25,photometric,60,1.0,1.0,1.0,0.0,2.6
+brightness_-25,photometric,60,1.0,1.0,1.0,0.0,0.0667
+contrast_+30,photometric,60,1.0,1.0,1.0,0.0,1.5
+contrast_-30,photometric,60,1.0,1.0,1.0,0.0,0.0
+format_png,format,60,1.0,1.0,1.0,0.0,0.0
+format_webp,format,60,1.0,1.0,1.0,0.0,0.0333
+social_pipeline,combined,60,1.0,1.0,1.0,0.0,0.1
+NEGATIVES (unrelated),negative,60,,,,0.0,

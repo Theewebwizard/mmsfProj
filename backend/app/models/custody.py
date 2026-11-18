@@ -54,3 +54,25 @@ class CustodyEvent(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+
+# ---------------------------------------------------------------------------
+# Append-only guard (ORM level).  Committed custody events and log entries are
+# immutable; Postgres additionally enforces this with triggers (migration 0002).
+# ---------------------------------------------------------------------------
+
+from sqlalchemy import event as _sa_event  # noqa: E402
+
+
+class ImmutableRecordError(RuntimeError):
+    pass
+
+
+def _forbid(mapper, connection, target):  # pragma: no cover - trivial
+    raise ImmutableRecordError(
+        f"{type(target).__name__} rows are append-only and cannot be modified or deleted"
+    )
+
+
+_sa_event.listen(CustodyEvent, "before_update", _forbid)
+_sa_event.listen(CustodyEvent, "before_delete", _forbid)
